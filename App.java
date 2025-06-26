@@ -160,7 +160,7 @@ public class App {
         JLabel textbox = new JLabel("No text");
         resultsPanel.add(textbox);
         
-        JButton dfsButton = new JButton("BFS");
+        JButton dfsButton = new JButton("DFS");
         dfsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
