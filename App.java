@@ -160,8 +160,8 @@ public class App {
         JLabel textbox = new JLabel("No text");
         resultsPanel.add(textbox);
         
-        JButton bfsButton = new JButton("BFS");
-        bfsButton.addActionListener(new ActionListener() {
+        JButton dfsButton = new JButton("BFS");
+        dfsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 choiceWrapper[0] = 1;
@@ -227,7 +227,7 @@ public class App {
                 System.out.println(goalWrapper[0]);
             }
         });
-        algorithms.add(bfsButton);
+        algorithms.add(dfsButton);
         algorithms.add(gbfsButton);
         algorithms.add(findPath);
         
