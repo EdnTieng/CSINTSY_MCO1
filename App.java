@@ -102,25 +102,25 @@ public class App {
             }
         }
     }
-    // ----- End Greedy Best-First Search additions -----
+    
 
     public static void main(String[] args) {
         List<String> letters = Arrays.asList(
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U"
+            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
         );
 
         Scanner scanner = new Scanner(System.in);
 
-        // 1) Menu
-        System.out.println("Choose search algorithm:");
+        
+        System.out.println("Choose search algorithm: TESTING NEW MAP");
         System.out.println("  1) DFS");
         System.out.println("  2) Greedy Best-First");
         System.out.print("Enter choice [1-2]: ");
         int choice = scanner.nextInt();
         scanner.nextLine();  // consume newline
 
-        // 2) Read start and goal
+        
         System.out.print("Enter the start state (A-U): ");
         String start = scanner.nextLine().trim().toUpperCase();
         System.out.print("Enter the goal state (A-U): ");
@@ -139,18 +139,99 @@ public class App {
         }
         // Hardcoded weights and connections
         // Can add more nodes and change connections as needed
-        graph.get("A").add(new Edge("B", 4));
-        graph.get("A").add(new Edge("C", 2));
+        /*1 */
+        graph.get("S").add(new Edge("M", 4));
+        graph.get("S").add(new Edge("O", 4));
+        graph.get("S").add(new Edge("Q", 4));
+        graph.get("S").add(new Edge("R", 4));
+        graph.get("S").add(new Edge("T", 4));
+        /*1 */
 
+        /*2 */
+        graph.get("M").add(new Edge("K", 4));
+        graph.get("M").add(new Edge("N", 4));
+        graph.get("M").add(new Edge("S", 4));
+
+        graph.get("N").add(new Edge("I", 4));
+        graph.get("N").add(new Edge("O", 4));
+        graph.get("N").add(new Edge("M", 4));
+
+        graph.get("O").add(new Edge("S", 4));
+        graph.get("O").add(new Edge("N", 4));
+        graph.get("O").add(new Edge("P", 4));
+        graph.get("O").add(new Edge("E", 4));
+
+        graph.get("P").add(new Edge("O", 4));
+        graph.get("P").add(new Edge("Q", 4));
+
+        graph.get("Q").add(new Edge("S", 4));
+        graph.get("Q").add(new Edge("P", 4));
+        graph.get("Q").add(new Edge("R", 4));
+        graph.get("Q").add(new Edge("C", 4));
+
+        graph.get("R").add(new Edge("S", 4));
+        graph.get("R").add(new Edge("Q", 4));
+        graph.get("R").add(new Edge("T", 4));
+
+        graph.get("T").add(new Edge("S", 4));
+        graph.get("T").add(new Edge("R", 4));
+        graph.get("T").add(new Edge("B", 4));
+        graph.get("T").add(new Edge("A", 4));
+        /*2 */
+
+        /*3 */
+        graph.get("K").add(new Edge("M", 4));
+        graph.get("K").add(new Edge("J", 4));
+        graph.get("K").add(new Edge("U", 4));
+
+        graph.get("J").add(new Edge("K", 4));
+        graph.get("J").add(new Edge("I", 4));
+
+        graph.get("I").add(new Edge("N", 4));
+        graph.get("I").add(new Edge("J", 4));
+        graph.get("I").add(new Edge("G", 4));
+
+        graph.get("G").add(new Edge("I", 4));
+        graph.get("G").add(new Edge("F", 4));
+
+        graph.get("F").add(new Edge("G", 4));
+        graph.get("F").add(new Edge("E", 4));
+
+        graph.get("E").add(new Edge("O", 4));
+        graph.get("E").add(new Edge("F", 4));
+        graph.get("E").add(new Edge("C", 4));
+
+        graph.get("C").add(new Edge("Q", 4));
+        graph.get("C").add(new Edge("E", 4));
+        graph.get("C").add(new Edge("B", 4));
+        graph.get("C").add(new Edge("D", 4));
+
+        graph.get("B").add(new Edge("T", 4));
+        graph.get("B").add(new Edge("C", 4));
         graph.get("B").add(new Edge("A", 4));
-        graph.get("B").add(new Edge("C", 5));
-        graph.get("B").add(new Edge("D", 10));
 
-        graph.get("C").add(new Edge("A", 2));
-        graph.get("C").add(new Edge("B", 5));
+        graph.get("A").add(new Edge("B", 4));
+        graph.get("A").add(new Edge("T", 4));
+        /*3 */
 
-        graph.get("D").add(new Edge("B", 10));
-        graph.get("D").add(new Edge("E", 3));
+        /*4 */
+        graph.get("U").add(new Edge("K", 4));
+        graph.get("U").add(new Edge("J", 4));
+
+        graph.get("J").add(new Edge("U", 4));
+        graph.get("J").add(new Edge("L", 4));
+
+        graph.get("L").add(new Edge("J", 4));
+        graph.get("L").add(new Edge("H", 4));
+
+        graph.get("H").add(new Edge("L", 4));
+        graph.get("H").add(new Edge("D", 4));
+
+        graph.get("D").add(new Edge("C", 4));
+        graph.get("D").add(new Edge("H", 4));
+        /*4 */
+
+        
         
 
         System.out.println();
@@ -162,10 +243,10 @@ public class App {
                 Set<String> visited = new HashSet<>();
                 DFSResult dfsResult = new DFSResult();
                 dfs(start, goal, graph, visited, dfsResult, 0);
-                
+
                 if (dfsResult.found) {
                     List<String> path = reconstructPath(goal, dfsResult.previous);
-                    System.out.println("DFS path from " + start + " to " + goal + ": " +
+                    System.out.println("DFS path from TEST NEW MAP" + start + " to " + goal + ": " +
                         String.join(" -> ", path));
                     System.out.println("Total cost: " + dfsResult.totalCost);
                 } else {
