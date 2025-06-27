@@ -61,39 +61,44 @@ public class GUI extends javax.swing.JFrame {
     }
     // ----- End Depth-First Search additions -----
     
-    // Greedy Best-First Search (using edge weight as heuristic)
-    static void bestFirst(String start, String goal, Map<String, List<Edge>> graph, BFSResult result) {
+    // A* Search Algorithm
+    public void aStarSearch(String start, String goal, Map<String, List<Edge>> graphMap, Graph graph, BFSResult result) {
         PriorityQueue<Node> frontier = new PriorityQueue<>();
         Set<String> visited = new HashSet<>();
         Map<String, Integer> costSoFar = new HashMap<>();
 
-        frontier.add(new Node(start, 0));
+        frontier.add(new Node(start, 0)); // f(n) = 0 initially
         costSoFar.put(start, 0);
+        result.addPrevious(start, null); // start has no predecessor
 
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
-            if (visited.contains(current.getName())) continue;
-            visited.add(current.getName());
+            String currentNode = current.getName();
 
-            if (current.getName().equals(goal)) {
+            if (visited.contains(currentNode)) continue;
+            visited.add(currentNode);
+
+            if (currentNode.equals(goal)) {
                 result.setFound(true);
                 result.setTotalCost(costSoFar.get(goal));
                 return;
             }
 
-            for (Edge e : graph.get(current.getName())) {
-                if (visited.contains(e.getTarget())) continue;
-                int newCost = costSoFar.get(current.getName()) + e.getWeight();
-                boolean improved = !costSoFar.containsKey(e.getTarget()) || newCost < costSoFar.get(e.getTarget());
-                if (improved) {
-                    costSoFar.put(e.getTarget(), newCost);
-                    result.addPrevious(e.getTarget(), current.getName());
-                    frontier.add(new Node(e.getTarget(), e.getWeight()));
+            for (Edge edge : graphMap.get(currentNode)) {
+                String neighbor = edge.getTarget();
+                int newCost = costSoFar.get(currentNode) + edge.getWeight(); // g(n)
+
+                if (!costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)) {
+                    costSoFar.put(neighbor, newCost);
+                    result.addPrevious(neighbor, currentNode);
+
+                    int priority = newCost + graph.getHeuristic(neighbor); // f(n) = g(n) + h(n)
+                    frontier.add(new Node(neighbor, priority));
                 }
             }
         }
     }
-    // ----- End Greedy Best-First Search additions -----
+    // A* Search Algorithm end
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -590,7 +595,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jButton24.setText("GBFS");
+        jButton24.setText("A* Search");
         jButton24.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton24ActionPerformed(evt);
@@ -922,19 +927,30 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton23ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
-        // Greedy Best-First
-        BFSResult bfsResult = new BFSResult();
-        String start = from.getText();
-        String goal = to.getText();
-        bestFirst(start, goal, this.graph.getGraph(), bfsResult);
+        // A* Search
+        BFSResult bfsResult = new BFSResult(); // AStarResult could be used later
+        String start = from.getText().trim();
+        String goal = to.getText().trim();
+
+        aStarSearch(start, goal, this.graph.getGraph(), this.graph, bfsResult); // graph used to fetch heuristic inside
+
         if (bfsResult.getFound()) {
             List<String> path = reconstructPath(goal, bfsResult.getPrevious());
-            result.setText("Greedy Best-First path from " + start + " to " + goal + ": " +
-            String.join(" -> ", path) + " Total cost: " + bfsResult.getTotalCost());
+            int g = bfsResult.getTotalCost(); // gets the total cost
+            int h = this.graph.getHeuristic(goal);  // gets the heuristic value for the goal node
+            int f = g + h;
+
+            result.setText("A* path from " + start + " to " + goal + ": " +
+                String.join(" -> ", path) + 
+                "\n Total cost (g): " + g + 
+                "\n Heuristic (h): " + h + 
+                "\n Final A* score (f = g + h): " + f);
         } else {
-            result.setText("No path found from " + start + " to " + goal + " using Greedy Best-First.");
+            result.setText("No path found from " + start + " to " + goal + " using A*.");
         }
     }//GEN-LAST:event_jButton24ActionPerformed
+
+
 
     /**
      * @param args the command line arguments
