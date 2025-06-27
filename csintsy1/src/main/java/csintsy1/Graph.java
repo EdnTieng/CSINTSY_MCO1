@@ -63,9 +63,9 @@ public class Graph {
         this.addEdge("C", "D", 1);
 
         this.addEdge("U", "K", 1);
-        this.addEdge("U", "J'", 1); 
+        this.addEdge("U", "J", 1); 
 
-        this.addEdge("J'", "L", 1);
+        this.addEdge("J", "L", 1);
         this.addEdge("L", "H", 1);
         this.addEdge("H", "D", 1);   
     }
